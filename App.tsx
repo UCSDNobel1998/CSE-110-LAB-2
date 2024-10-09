@@ -6,7 +6,7 @@ import { ThemeContext, themes } from "./themeContext";
 
 function App() {
   const [notes, setNotes] = useState<Note[]>(dummyNotesList);
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const [favorites, setFavorites] = useState<number[]>([]); 
   const initialNote = { id: -1, title: "", content: "", label: Label.other };
   const [newNote, setNewNote] = useState<Note>(initialNote);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
@@ -25,22 +25,23 @@ function App() {
     e.preventDefault();
     const newNoteWithId: Note = {
       ...newNote,
-      id: notes.length + 1
+      id: notes.length > 0 ? Math.max(...notes.map(n => n.id)) + 1 : 1
     };
     setNotes(prev => [...prev, newNoteWithId]);
     setNewNote(initialNote);
   };
 
-  const toggleFavorite = (title: string) => {
+  const toggleFavorite = (id: number) => {
     setFavorites(prev => 
-      prev.includes(title)
-        ? prev.filter(t => t !== title)
-        : [...prev, title]
+      prev.includes(id)
+        ? prev.filter(favId => favId !== id)
+        : [...prev, id]
     );
   };
 
   const deleteNote = (id: number) => {
     setNotes(prev => prev.filter(note => note.id !== id));
+    setFavorites(prev => prev.filter(favId => favId !== id));
   };
 
   const selectNoteForEdit = (note: Note) => {
@@ -123,8 +124,8 @@ function App() {
              className="note-item">
              <div className="notes-header">
                <button onClick={() => deleteNote(note.id)}>x</button>
-               <button onClick={() => toggleFavorite(note.title)}>
-                 {favorites.includes(note.title) ? '❤️' : '🤍'}
+               <button onClick={() => toggleFavorite(note.id)}>
+                 {favorites.includes(note.id) ? '❤️' : '🤍'}
                </button>
                <button onClick={() => selectNoteForEdit(note)}>Edit</button>
              </div>
@@ -167,9 +168,11 @@ function App() {
         <div className="favorites-list">
           <h3>List of favorites:</h3>
           <ul className="favorites-items">
-            {favorites.map((title, index) => (
-              <li key={index}>{title}</li>
-            ))}
+            {notes
+              .filter(note => favorites.includes(note.id))
+              .map(note => (
+                <li key={note.id}>{note.title}</li>
+              ))}
           </ul>
         </div>
         <button onClick={toggleTheme}>Toggle Theme</button>
