@@ -47,11 +47,20 @@ function App() {
     setSelectedNote(note);
   };
 
-  const handleNoteEdit = (e: React.ChangeEvent<HTMLDivElement>, field: keyof Note) => {
+  const handleNoteEdit = (
+    e: React.ChangeEvent<HTMLSelectElement> | React.FocusEvent<HTMLDivElement>,
+    field: keyof Note
+  ) => {
     if (selectedNote) {
+      let value: string;
+      if (e.target instanceof HTMLSelectElement) {
+        value = e.target.value;
+      } else {
+        value = e.currentTarget.textContent || '';
+      }
       setSelectedNote({
         ...selectedNote,
-        [field]: e.currentTarget.textContent || ''
+        [field]: value
       });
     }
   };
@@ -137,7 +146,7 @@ function App() {
                  </p>
                  <select 
                    value={selectedNote.label} 
-                   onChange={(e) => handleNoteEdit(e as any, 'label')}
+                   onChange={(e) => handleNoteEdit(e, 'label')}
                  >
                    {Object.values(Label).map(label => (
                      <option key={label} value={label}>{label}</option>
