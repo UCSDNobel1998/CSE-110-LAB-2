@@ -4,54 +4,74 @@ body {
  }
  
  .app-container {
-  grid-template-columns: 1fr;
- }
- 
- @media (min-width: 600px) {
-  .app-container {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 20px;
-  }
- }
- 
- .notes-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    "form notes"
+    "favorites notes"
+    "theme notes";
+  grid-template-columns: 250px 1fr;
   gap: 20px;
- }
+}
  
- @media (max-width: 1200px) {
-  .notes-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
- }
- 
- @media (max-width: 900px) {
-  .notes-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
- }
- 
- @media (max-width: 600px) {
-  .notes-grid {
+@media (max-width: 600px) {
+  .app-container {
+    grid-template-areas:
+      "form"
+      "notes"
+      "favorites"
+      "theme";
     grid-template-columns: 1fr;
   }
- }
+}
+ 
+.note-form {
+  grid-area: form;
+}
+
+.notes-grid {
+  grid-area: notes;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: minmax(250px, auto);
+  gap: 20px;
+}
+
+.favorites-list {
+  grid-area: favorites;
+}
+
+.favorites-items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.theme-toggle {
+  grid-area: theme;
+  align-self: start;
+}
+
+.theme-toggle button {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
  
  .note-item {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 5px;
   background-color: #f9f9f9;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  min-height: 300px;
-  min-width: 250px;
-}
-
+ }
  
  .notes-header {
   display: flex;
@@ -113,7 +133,18 @@ body {
   color: white;
  }
 
- .favorites-items {
-  list-style-type: none;
-  padding-left: 0;
+ .theme-toggle {
+  grid-area: theme;
+  align-self: start;
+}
+
+.theme-toggle button {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
