@@ -175,7 +175,9 @@ function App() {
               ))}
           </ul>
         </div>
-        <button onClick={toggleTheme}>Toggle Theme</button>
+        <div className="theme-toggle">
+          <button onClick={toggleTheme}>Toggle Theme</button>
+        </div>
       </div>
     </ThemeContext.Provider>
   );
