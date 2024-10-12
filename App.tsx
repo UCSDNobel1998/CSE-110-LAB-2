@@ -11,6 +11,7 @@ function App() {
   const [newNote, setNewNote] = useState<Note>(initialNote);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [theme, setTheme] = useState(themes.light);
+  const themeButton = useContext(ThemeContext);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === themes.light ? themes.dark : themes.light);
@@ -176,7 +177,15 @@ function App() {
           </ul>
         </div>
         <div className="theme-toggle">
-          <button onClick={toggleTheme}>Toggle Theme</button>
+          <button 
+            onClick={toggleTheme}
+            style={{ 
+              backgroundColor: theme.buttonBackground, 
+              color: themeButton.buttonColor 
+            }}
+          >
+            Toggle Theme
+          </button>
         </div>
       </div>
     </ThemeContext.Provider>
